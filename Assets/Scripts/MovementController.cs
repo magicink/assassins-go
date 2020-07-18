@@ -1,33 +1,31 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class PlayerMover : MonoBehaviour
+public class MovementController : MonoBehaviour
 {
-    private bool _moving;
+    private bool _isMoving;
     public iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
     public float speed = 1.5f;
     public float tweenDelay;
 
-    private void Start()
-    {
-    }
+    public bool IsMoving => _isMoving;
 
-    private void MoveBack()
+    public void MoveBack()
     {
         Move(transform.position + new Vector3(0, 0, -2), tweenDelay);
     }
 
-    private void MoveForward()
+    public void MoveForward()
     {
         Move(transform.position + new Vector3(0, 0, 2), tweenDelay);
     }
 
-    private void MoveLeft()
+    public void MoveLeft()
     {
         Move(transform.position + new Vector3(-2, 0, 0), tweenDelay);
     }
 
-    private void MoveRight()
+    public void MoveRight()
     {
         Move(transform.position + new Vector3(2, 0, 0), tweenDelay);
     }
@@ -41,7 +39,7 @@ public class PlayerMover : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        _moving = true;
+        _isMoving = true;
 
         var lookRotation = 
             Quaternion.LookRotation((destination - transform.position).normalized);
@@ -62,6 +60,6 @@ public class PlayerMover : MonoBehaviour
         }
 
         transform.position = destination;
-        _moving = false;
+        _isMoving = false;
     }
 }
