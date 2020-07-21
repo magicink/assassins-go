@@ -37,12 +37,12 @@ public class PlayerManager : MonoBehaviour
         {
             if (_playerInput.Vertical > 0)
             {
-                _movementController.MoveForward();
+                _movementController.MoveBack();
             }
 
             if (_playerInput.Vertical < 0)
             {
-                _movementController.MoveBack();
+                _movementController.MoveForward();
             }
         }
     }
