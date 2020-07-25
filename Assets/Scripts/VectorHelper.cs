@@ -2,13 +2,18 @@
 
 public static class VectorHelper
 {
-    public static Vector3 Round(Vector3 source)
+    public static Vector3 Floor(Vector3 source)
     {
-        return new Vector3(Mathf.Round(source.x), Mathf.Round(source.y), Mathf.Round(source.z));
+        return new Vector3(Mathf.Floor(source.x), Mathf.Floor(source.y), Mathf.Floor(source.z));
     }
 
-    public static Vector2 Round(Vector2 source)
+    public static Vector2 Floor(Vector2 source)
     {
-        return new Vector2(Mathf.Round(source.x), Mathf.Round(source.y));
+        return new Vector2(Mathf.Floor(source.x), Mathf.Floor(source.y));
+    }
+
+    public static Vector2 Flatten(Vector3 source)
+    {
+        return Floor(new Vector2(source.x, source.z));
     }
 }
