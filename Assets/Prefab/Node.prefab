@@ -124,7 +124,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoRun: 0
-  delay: 0.15
+  delay: 0
   easeType: 15
   geometry: {fileID: 2045623143306620517}
-  scaleTime: 0.5
+  linkPrefab: {fileID: 5635430884602432841, guid: 1f25f2e6c8322204897eb555ba0ed164,
+    type: 3}
+  scaleTime: 0.1
