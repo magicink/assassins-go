@@ -33,4 +33,10 @@ public class Board : MonoBehaviour
             node.Neighbors = Node.FindNeighbors(node, Nodes);
         }
     }
+
+    public Node FindNodeAt(Vector3 target)
+    {
+        var boardPosition = VectorHelper.Flatten(target);
+        return Nodes.Find(n => n.Coordinates == boardPosition);
+    }
 }

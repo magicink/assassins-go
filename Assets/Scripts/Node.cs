@@ -15,7 +15,7 @@ public class Node : MonoBehaviour
     [SerializeField] private GameObject linkPrefab;
     [SerializeField] private float scaleTime = 0.25f;
 
-    public Vector2 Coordinates => VectorHelper.Round(_coordinates);
+    public Vector2 Coordinates => VectorHelper.Floor(_coordinates);
 
     public List<Node> Neighbors { get; set; } = new List<Node>();
 
