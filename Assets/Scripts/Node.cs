@@ -6,18 +6,24 @@ public class Node : MonoBehaviour
 {
     private Vector2 _coordinates;
     private bool _initialized;
+    private bool _isLinkPrefabNull;
+    private List<Node> _linkedNodes = new List<Node>();
     [SerializeField] private bool autoRun;
     [SerializeField] private float delay = 0.25f;
     [SerializeField] private iTween.EaseType easeType = iTween.EaseType.easeInExpo;
     [SerializeField] private GameObject geometry;
+    [SerializeField] private GameObject linkPrefab;
     [SerializeField] private float scaleTime = 0.25f;
 
     public Vector2 Coordinates => VectorHelper.Round(_coordinates);
 
     public List<Node> Neighbors { get; set; } = new List<Node>();
 
+    public List<Node> LinkedNodes => _linkedNodes;
+
     private void Awake()
     {
+        _isLinkPrefabNull = linkPrefab == null;
         var position = transform.position;
         _coordinates = new Vector2(position.x, position.z);
     }
@@ -60,7 +66,7 @@ public class Node : MonoBehaviour
         yield return new WaitForSeconds(delay);
         foreach (var neighbor in Neighbors)
         {
-            neighbor.Initialize();
+            if (!_linkedNodes.Contains(neighbor)) DrawNeighborLink(neighbor);
         }
     }
 
@@ -74,5 +80,20 @@ public class Node : MonoBehaviour
         }
 
         return neighbors;
+    }
+
+    private void DrawNeighborLink(Node target)
+    {
+        if (_isLinkPrefabNull) return;
+        var nodeTransform = transform;
+        var position = nodeTransform.position;
+        var linkInstance = Instantiate(linkPrefab, position, Quaternion.identity);
+        linkInstance.transform.parent = transform;
+        var link = linkInstance.GetComponent<Link>();
+        if (link == null) return;
+        if (!target.LinkedNodes.Contains(this)) target.LinkedNodes.Add(this);
+        if (!_linkedNodes.Contains(target)) _linkedNodes.Add(target);
+        link.Target = target;
+        link.Draw(position, target.transform.position);
     }
 }
