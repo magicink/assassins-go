@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +7,7 @@ public class Node : MonoBehaviour
     private Vector2 _coordinates;
     private bool _initialized;
     private bool _isLinkPrefabNull;
-    private List<Node> _linkedNodes = new List<Node>();
-    [SerializeField] private bool autoRun;
+    [SerializeField] private bool isRoot;
     [SerializeField] private float delay = 0.25f;
     [SerializeField] private iTween.EaseType easeType = iTween.EaseType.easeInExpo;
     [SerializeField] private GameObject geometry;
@@ -20,7 +19,9 @@ public class Node : MonoBehaviour
 
     public List<Node> Neighbors { get; set; } = new List<Node>();
 
-    public List<Node> LinkedNodes => _linkedNodes;
+    public List<Node> LinkedNodes { get; } = new List<Node>();
+
+    public bool IsRoot => isRoot;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class Node : MonoBehaviour
             geometry.transform.localScale = Vector3.zero;
         }
 
-        if (autoRun) Initialize();
+        if (isRoot) Initialize();
     }
 
     private void ShowGeometry()
@@ -70,7 +71,7 @@ public class Node : MonoBehaviour
             var obstacle = FindObstacle(neighbor);
             if (!obstacle)
             {
-                if (!_linkedNodes.Contains(neighbor)) DrawNeighborLink(neighbor);
+                if (!LinkedNodes.Contains(neighbor)) DrawNeighborLink(neighbor);
             }
         }
     }
@@ -97,7 +98,7 @@ public class Node : MonoBehaviour
         var link = linkInstance.GetComponent<Link>();
         if (link == null) return;
         if (!target.LinkedNodes.Contains(this)) target.LinkedNodes.Add(this);
-        if (!_linkedNodes.Contains(target)) _linkedNodes.Add(target);
+        if (!LinkedNodes.Contains(target)) LinkedNodes.Add(target);
         link.Target = target;
         link.Draw(position, target.transform.position);
     }

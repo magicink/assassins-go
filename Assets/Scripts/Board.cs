@@ -1,4 +1,6 @@
+﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -13,6 +15,7 @@ public class Board : MonoBehaviour
     };
 
     private PlayerInput _playerInput;
+    private Node _rootNode;
 
     public Node PlayerNode { get; private set; }
 
@@ -37,9 +40,14 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
-        PlayerNode = FindPlayerNode();
         foreach (var node in Nodes)
         {
+            if (node.IsRoot && _playerInput && !_rootNode)
+            {
+                _rootNode = node;
+                _playerInput.transform.position = VectorHelper.Floor(node.transform.position);
+                PlayerNode = FindPlayerNode();
+            }
             node.Neighbors = Node.FindNeighbors(node, Nodes);
         }
     }
@@ -50,8 +58,23 @@ public class Board : MonoBehaviour
         return Nodes.Find(n => n.Coordinates == boardPosition);
     }
 
-    public Node FindPlayerNode()
+    private Node FindPlayerNode()
     {
         return _playerInput ? FindNodeAt(_playerInput.transform.position) : null;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_rootNode)
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(_rootNode.transform.position, 0.25f);
+        }
+
+        if (PlayerNode)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(PlayerNode.transform.position, 0.25f);
+        }
     }
 }
