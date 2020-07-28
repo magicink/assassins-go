@@ -4,14 +4,18 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     private Board _board;
-    private bool _boardIsDefined = false;
-    public iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
-    public float speed = 1.5f;
-    public float tweenDelay;
+    private bool _boardIsDefined;
+    [SerializeField] private iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
+    [SerializeField] private float speed = 1.5f;
+    [SerializeField] private float tweenDelay;
+
+    public delegate void MoveEvent();
+
+    public static event MoveEvent OnMoveEnd;
 
     public bool IsMoving { get; private set; }
 
-    private void Awake()
+    private void Awake()  
     {
         _board = FindObjectOfType<Board>();
         _boardIsDefined = _board != null;
@@ -39,7 +43,8 @@ public class MovementController : MonoBehaviour
 
     private void Move(Vector3 destination, float delay = 0.25f)
     {
-        if (_boardIsDefined && _board.FindNodeAt(destination))
+        var target = _board.FindNodeAt(destination);
+        if (!IsMoving && _boardIsDefined && target && _board.PlayerNode.LinkedNodes.Contains(target))
         {
             StartCoroutine(MoveRoutine(destination, delay));
         }
@@ -48,9 +53,7 @@ public class MovementController : MonoBehaviour
     private IEnumerator MoveRoutine(Vector3 destination, float delay)
     {
         yield return new WaitForSeconds(delay);
-
-        IsMoving = true;
-
+        
         var lookRotation = 
             Quaternion.LookRotation((destination - transform.position).normalized);
         transform.rotation = lookRotation;
@@ -61,15 +64,24 @@ public class MovementController : MonoBehaviour
             "z", destination.z,
             "easetype", easeType,
             "delay", delay,
-            "speed", speed
+            "speed", speed,
+            "onstart", "OnMoveStart",
+            "oncomplete", "OnMoveComplete",
+            "oncompleteparams", destination
         ));
+    }
 
-        while (Vector3.Distance(transform.position, destination) > 0.01f)
-        {
-            yield return null;
-        }
+    // ReSharper disable once UnusedMember.Local
+    private void OnMoveStart()
+    {
+        IsMoving = true;
+    }
 
-        transform.position = destination;
+    // ReSharper disable once UnusedMember.Local
+    private void OnMoveComplete(Vector3 destination)
+    {
         IsMoving = false;
+        transform.position = VectorHelper.Floor(destination);
+        OnMoveEnd?.Invoke();
     }
 }

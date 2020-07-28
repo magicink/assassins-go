@@ -12,22 +12,32 @@ public class Board : MonoBehaviour
         new Vector2(0f, -Spacing), 
     };
 
-    private List<Node> _nodes  = new List<Node>();
+    private PlayerInput _playerInput;
 
-    public List<Node> Nodes => _nodes;
+    public Node PlayerNode { get; private set; }
+
+    private List<Node> Nodes { get; set; } = new List<Node>();
 
     private void InitializeNodes()
     {
-        _nodes = new List<Node>(FindObjectsOfType<Node>());
+        Nodes = new List<Node>(FindObjectsOfType<Node>());
     }
 
     private void Awake()
     {
+        _playerInput = FindObjectOfType<PlayerInput>().GetComponent<PlayerInput>();
+        MovementController.OnMoveEnd += HandleMoveEnd;
         InitializeNodes();
+    }
+
+    private void HandleMoveEnd()
+    {
+        PlayerNode = FindPlayerNode();
     }
 
     private void Start()
     {
+        PlayerNode = FindPlayerNode();
         foreach (var node in Nodes)
         {
             node.Neighbors = Node.FindNeighbors(node, Nodes);
@@ -38,5 +48,10 @@ public class Board : MonoBehaviour
     {
         var boardPosition = VectorHelper.Flatten(target);
         return Nodes.Find(n => n.Coordinates == boardPosition);
+    }
+
+    public Node FindPlayerNode()
+    {
+        return _playerInput ? FindNodeAt(_playerInput.transform.position) : null;
     }
 }

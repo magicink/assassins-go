@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd954078664b3334eb499a8a60f24328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  easeType: 17
-  speed: 2.5
+  easeType: 14
+  speed: 3.5
   tweenDelay: 0
 --- !u!114 &9096598699315655498
 MonoBehaviour:
