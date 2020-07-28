@@ -14,6 +14,7 @@ public class Node : MonoBehaviour
     [SerializeField] private GameObject geometry;
     [SerializeField] private GameObject linkPrefab;
     [SerializeField] private float scaleTime = 0.25f;
+    [SerializeField] private LayerMask obstacleLayerMask;
 
     public Vector2 Coordinates => VectorHelper.Floor(_coordinates);
 
@@ -66,7 +67,11 @@ public class Node : MonoBehaviour
         yield return new WaitForSeconds(delay);
         foreach (var neighbor in Neighbors)
         {
-            if (!_linkedNodes.Contains(neighbor)) DrawNeighborLink(neighbor);
+            var obstacle = FindObstacle(neighbor);
+            if (!obstacle)
+            {
+                if (!_linkedNodes.Contains(neighbor)) DrawNeighborLink(neighbor);
+            }
         }
     }
 
@@ -95,5 +100,15 @@ public class Node : MonoBehaviour
         if (!_linkedNodes.Contains(target)) _linkedNodes.Add(target);
         link.Target = target;
         link.Draw(position, target.transform.position);
+    }
+
+    private Obstacle FindObstacle(Component target)
+    {
+        var origin = transform.position;
+        var direction = target.transform.position - origin;
+
+        return Physics.Raycast(origin, direction, out var hit, Board.Spacing, obstacleLayerMask)
+            ? hit.collider.GetComponent<Obstacle>()
+            : null;
     }
 }

@@ -130,3 +130,6 @@ MonoBehaviour:
   linkPrefab: {fileID: 5635430884602432841, guid: 1f25f2e6c8322204897eb555ba0ed164,
     type: 3}
   scaleTime: 0.1
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
