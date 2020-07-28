@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class MovementController : MonoBehaviour
 {
-    private bool _isMoving;
     private Board _board;
     private bool _boardIsDefined = false;
     public iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
     public float speed = 1.5f;
     public float tweenDelay;
 
-    public bool IsMoving => _isMoving;
+    public bool IsMoving { get; private set; }
 
     private void Awake()
     {
@@ -40,7 +37,7 @@ public class MovementController : MonoBehaviour
         Move(transform.position + new Vector3(Board.Spacing, 0, 0), tweenDelay);
     }
 
-    public void Move(Vector3 destination, float delay = 0.25f)
+    private void Move(Vector3 destination, float delay = 0.25f)
     {
         if (_boardIsDefined && _board.FindNodeAt(destination))
         {
@@ -52,7 +49,7 @@ public class MovementController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        _isMoving = true;
+        IsMoving = true;
 
         var lookRotation = 
             Quaternion.LookRotation((destination - transform.position).normalized);
@@ -73,6 +70,6 @@ public class MovementController : MonoBehaviour
         }
 
         transform.position = destination;
-        _isMoving = false;
+        IsMoving = false;
     }
 }
