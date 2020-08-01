@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     private Board _board;
     private PlayerManager _playerManager;
-
+    [SerializeField] private UnityEvent onLevelEnded;
+    [SerializeField] private UnityEvent onLevelStarted;
+    [SerializeField] private UnityEvent onLevelInitialized;
     [SerializeField] private float stateChangeDelay = 1.0f;
-    
-    public bool GameEnded { get; set; }
 
-    public bool LevelStarted { get; set; }
-    
-    public bool LevelEnded { get; set; }
+    private bool GameEnded { get; set; }
+
+    private bool LevelInitialized { get; set; }
+
+    private bool LevelEnded { get; set; }
+
 
     private void Awake()
     {
@@ -28,35 +31,30 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(nameof(StartGame));
         }
-        else
-        {
-            Debug.Log("Could not find board or player manager");
-        }
     }
 
     private IEnumerator StartGame()
     {
-        Debug.Log("Starting game");
+        yield return StartCoroutine(nameof(InitializeLevel));
         yield return StartCoroutine(nameof(StartLevel));
-        yield return StartCoroutine(nameof(PlayLevel));
         yield return StartCoroutine(nameof(EndLevel));
+    }
+
+    private IEnumerator InitializeLevel()
+    {
+        _playerManager.PlayerInput.InputEnabled = false;
+        while (!LevelInitialized)
+        {
+            yield return null;
+        }
+        onLevelInitialized?.Invoke();
     }
 
     private IEnumerator StartLevel()
     {
-        Debug.Log("Awaiting the start of the level");
-        _playerManager.PlayerInput.InputEnabled = false;
-        while (!LevelStarted)
-        {
-            yield return null;
-        }
-    }
-
-    private IEnumerator PlayLevel()
-    {
-        Debug.Log("Level started");
         yield return new WaitForSeconds(stateChangeDelay);
         _playerManager.PlayerInput.InputEnabled = true;
+        onLevelStarted?.Invoke();
         while (!GameEnded)
         {
             yield return null;
@@ -66,6 +64,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator EndLevel()
     {
         _playerManager.PlayerInput.InputEnabled = false;
+        onLevelEnded?.Invoke();
         while (!LevelEnded)
         {
             yield return null;
@@ -73,7 +72,7 @@ public class GameManager : MonoBehaviour
         RestartLevel();
     }
 
-    private void RestartLevel()
+    private static void RestartLevel()
     {
         var scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
@@ -81,6 +80,6 @@ public class GameManager : MonoBehaviour
 
     public void HandleStartLevel()
     {
-        LevelStarted = true;
+        LevelInitialized = true;
     }
 }

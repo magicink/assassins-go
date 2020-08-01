@@ -25,15 +25,27 @@ public class Overlay : MonoBehaviour
             "time", time,
             "delay", delay,
             "onupdatetarget", o,
-            "onupdate", "UpdateFade"
+            "onupdate", "OnUpdate",
+            "oncomplete", "OnComplete",
+            "onstart", "OnStart"
         ));
     }
 
-    private void UpdateFade(Color nextColor)
+    private void OnUpdate(Color nextColor)
     {
         if (_graphic)
         {
             _graphic.color = nextColor;
         }
+    }
+
+    private void OnComplete()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnStart()
+    {
+        
     }
 }
