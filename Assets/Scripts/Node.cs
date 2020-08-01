@@ -69,10 +69,8 @@ public class Node : MonoBehaviour
         foreach (var neighbor in Neighbors)
         {
             var obstacle = FindObstacle(neighbor);
-            if (!obstacle)
-            {
-                if (!LinkedNodes.Contains(neighbor)) DrawNeighborLink(neighbor);
-            }
+            if (obstacle) continue;
+            if (!LinkedNodes.Contains(neighbor)) DrawNeighborLink(neighbor);
         }
     }
 
