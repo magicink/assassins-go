@@ -126,7 +126,7 @@ MonoBehaviour:
   delay: 0
   easeType: 15
   geometry: {fileID: 2045623143306620517}
-  goalPrefab: {fileID: 5276973297100411922, guid: b024e69b8de01f042b9e45659a21fa36,
+  goalPrefab: {fileID: 7777902011578395544, guid: f7929ff02198103428a39bddc2d2dbc9,
     type: 3}
   isGoal: 0
   isRoot: 0
