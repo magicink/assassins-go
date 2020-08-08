@@ -7,13 +7,16 @@ public class Node : MonoBehaviour
     private Vector2 _coordinates;
     private bool _initialized;
     private bool _isLinkPrefabNull;
-    [SerializeField] private bool isRoot;
+    private bool _isGoalPrefabNull;
     [SerializeField] private float delay = 0.25f;
     [SerializeField] private iTween.EaseType easeType = iTween.EaseType.easeInExpo;
     [SerializeField] private GameObject geometry;
+    [SerializeField] private GameObject goalPrefab;
+    [SerializeField] private bool isGoal;
+    [SerializeField] private bool isRoot;
     [SerializeField] private GameObject linkPrefab;
-    [SerializeField] private float scaleTime = 0.25f;
     [SerializeField] private LayerMask obstacleLayerMask;
+    [SerializeField] private float scaleTime = 0.25f;
 
     public Vector2 Coordinates => VectorHelper.Floor(_coordinates);
 
@@ -23,9 +26,12 @@ public class Node : MonoBehaviour
 
     public bool IsRoot => isRoot;
 
+    public bool IsGoal => isGoal;
+
     private void Awake()
     {
         _isLinkPrefabNull = linkPrefab == null;
+        _isGoalPrefabNull = goalPrefab == null;
         var position = transform.position;
         _coordinates = new Vector2(position.x, position.z);
     }
@@ -37,7 +43,7 @@ public class Node : MonoBehaviour
             geometry.transform.localScale = Vector3.zero;
         }
 
-        if (isRoot) Initialize();
+        // if (isRoot) Initialize();
     }
 
     private void ShowGeometry()
@@ -45,8 +51,9 @@ public class Node : MonoBehaviour
         iTween.ScaleTo(geometry, iTween.Hash(
             "time", scaleTime,
             "scale", Vector3.one,
-            "easetype", easeType,
-            "delay", delay
+            "easeType", easeType,
+            "delay", delay,
+            "oncomplete", "DrawGoal"
         ));
     }
 
@@ -54,6 +61,10 @@ public class Node : MonoBehaviour
     {
         if (_initialized) return;
         ShowGeometry();
+        if (isGoal && !_isGoalPrefabNull)
+        {
+            Instantiate(goalPrefab, transform.position, Quaternion.identity);
+        }
         InitializeNeighbors();
         _initialized = true;
     }
