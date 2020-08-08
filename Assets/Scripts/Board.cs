@@ -16,6 +16,7 @@ public class Board : MonoBehaviour
 
     private PlayerInput _playerInput;
     private Node _rootNode;
+    private Node _goalNode;
 
     public Node PlayerNode { get; private set; }
 
@@ -38,17 +39,23 @@ public class Board : MonoBehaviour
         PlayerNode = FindPlayerNode();
     }
 
-    private void Start()
+    public void InitializeBoard()
     {
         foreach (var node in Nodes)
         {
+            node.Neighbors = Node.FindNeighbors(node, Nodes);
             if (node.IsRoot && _playerInput && !_rootNode)
             {
                 _rootNode = node;
+                _rootNode.Initialize();
                 _playerInput.transform.position = VectorHelper.Floor(node.transform.position);
                 PlayerNode = FindPlayerNode();
             }
-            node.Neighbors = Node.FindNeighbors(node, Nodes);
+
+            if (node.IsGoal && !_goalNode && !node.IsRoot)
+            {
+                _goalNode = node;
+            }
         }
     }
 

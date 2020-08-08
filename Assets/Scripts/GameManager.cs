@@ -81,5 +81,6 @@ public class GameManager : MonoBehaviour
     public void HandleStartLevel()
     {
         LevelInitialized = true;
+        _board.InitializeBoard();
     }
 }

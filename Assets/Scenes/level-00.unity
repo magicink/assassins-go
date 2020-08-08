@@ -1016,6 +1016,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f72729ea94656e478db8ebb7bf41896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onLevelEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  onLevelStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1943495234}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onLevelInitialized:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2067250715}
+        m_MethodName: FadeOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1943495237}
+        m_MethodName: FadeOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   stateChangeDelay: 1
 --- !u!4 &408570252
 Transform:
@@ -2415,7 +2457,7 @@ Transform:
   - {fileID: 111670103}
   - {fileID: 640585710}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1141198658
 PrefabInstance:
@@ -3280,6 +3322,11 @@ PrefabInstance:
       propertyPath: autoRun
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2059503513931215490, guid: 806b7f790b6e38947a17633b01e33c89,
+        type: 3}
+      propertyPath: isGoal
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 806b7f790b6e38947a17633b01e33c89, type: 3}
 --- !u!1001 &1623655790
@@ -3618,6 +3665,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059503513931215490, guid: 806b7f790b6e38947a17633b01e33c89,
+        type: 3}
+      propertyPath: isGoal
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 806b7f790b6e38947a17633b01e33c89, type: 3}
@@ -4153,39 +4205,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 408570251}
         m_MethodName: HandleStartLevel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1943495234}
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2067250715}
-        m_MethodName: FadeOut
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1943495237}
-        m_MethodName: FadeOut
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4815,7 +4834,7 @@ PrefabInstance:
     - target: {fileID: 1130804465438727230, guid: 616693118ffd9ec43b541503b7bc5324,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1130804465438727230, guid: 616693118ffd9ec43b541503b7bc5324,
         type: 3}
