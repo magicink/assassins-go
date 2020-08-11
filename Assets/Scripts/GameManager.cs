@@ -57,13 +57,14 @@ public class GameManager : MonoBehaviour
         onLevelStarted?.Invoke();
         while (!GameEnded)
         {
+            GameEnded = GameEndConditionMet();
             yield return null;
         }
+        Debug.Log("Game ended");
     }
 
     private IEnumerator EndLevel()
     {
-        _playerManager.PlayerInput.InputEnabled = false;
         onLevelEnded?.Invoke();
         while (!LevelEnded)
         {
@@ -82,5 +83,21 @@ public class GameManager : MonoBehaviour
     {
         LevelInitialized = true;
         _board.InitializeBoard();
+    }
+
+    public bool GameEndConditionMet()
+    {
+        var gameOver = false;
+        if (_board.PlayerNode != null && _board.GoalNode != null)
+        {
+            gameOver = _board.PlayerNode == _board.GoalNode;
+            if (gameOver)
+            {
+                _playerManager.PlayerInput.InputEnabled = false;
+            }
+            return gameOver;
+        }
+
+        return gameOver;
     }
 }
