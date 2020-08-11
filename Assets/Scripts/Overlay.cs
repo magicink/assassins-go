@@ -31,6 +31,21 @@ public class Overlay : MonoBehaviour
         ));
     }
 
+    public void FadeIn()
+    {
+        var o = gameObject;
+        iTween.ValueTo(o, iTween.Hash(
+            "from", to, 
+            "to", from, 
+            "time", time,
+            "delay", delay,
+            "onupdatetarget", o,
+            "onupdate", "OnUpdate",
+            "oncomplete", "OnComplete",
+            "onstart", "OnStart"
+        ));
+    }
+
     private void OnUpdate(Color nextColor)
     {
         if (_graphic)
@@ -41,7 +56,7 @@ public class Overlay : MonoBehaviour
 
     private void OnComplete()
     {
-        gameObject.SetActive(false);
+        // gameObject.SetActive(false);
     }
 
     private void OnStart()

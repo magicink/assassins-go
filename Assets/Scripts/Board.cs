@@ -20,6 +20,8 @@ public class Board : MonoBehaviour
 
     public Node PlayerNode { get; private set; }
 
+    public Node GoalNode => _goalNode;
+
     private List<Node> Nodes { get; set; } = new List<Node>();
 
     private void InitializeNodes()
